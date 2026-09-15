@@ -1,8 +1,8 @@
-name: Mirror Upstream (Force Except Workflows + Index + Posts)
+name: Mirror Upstream (Force Except Workflows + Index)
 
 on:
   schedule:
-    - cron: "0 1 * * *"
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 permissions:
@@ -27,26 +27,19 @@ jobs:
       - name: Save local files
         run: |
           mkdir -p /tmp/backup
-
-          # Backup workflows
+          
           if [ -d ".github/workflows" ]; then
             cp -r .github/workflows /tmp/backup/
           fi
-
-          # Backup index.html
+          
           if [ -f "index.html" ]; then
             cp index.html /tmp/backup/
-          fi
-
-          # Backup _posts
-          if [ -d "_posts" ]; then
-            cp -r _posts /tmp/backup/
           fi
 
       - name: Add upstream
         run: |
           git remote remove upstream || true
-          git remote add upstream https://github.com/nengmaya538/nengmaya538.github.io.git
+          git remote add upstream https://github.com/yusierni7/ngaloco.git
           git fetch upstream
 
       - name: Hard reset to upstream
@@ -55,28 +48,19 @@ jobs:
 
       - name: Restore excluded files
         run: |
-          # Restore workflows
           rm -rf .github/workflows
-
+          
           if [ -d "/tmp/backup/workflows" ]; then
             mkdir -p .github
             cp -r /tmp/backup/workflows .github/
           fi
-
-          # Restore index.html
+          
           if [ -f "/tmp/backup/index.html" ]; then
             cp /tmp/backup/index.html index.html
-          fi
-
-          # Restore _posts
-          rm -rf _posts
-
-          if [ -d "/tmp/backup/_posts" ]; then
-            cp -r /tmp/backup/_posts _posts
           fi
 
       - name: Force push to fork
         run: |
           git add .
-          git commit -m "Force sync except workflows, index.html and _posts" || echo "No changes"
+          git commit -m "Force sync except workflows and index.html" || echo "No changes"
           git push origin master --force

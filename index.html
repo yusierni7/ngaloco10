@@ -337,7 +337,7 @@ layout: null
 
 </head>
 <body>
-
+{% include /kw/p/edition-a/edition-a01.html%}
     <!-- HEADER -->
     <header class="site-header">
         <div class="header-inner">
@@ -468,7 +468,7 @@ layout: null
         <main class="content-area">
 
             <!-- ========== FEATURED ========== -->
-            {% assign category_posts = site.categories['pict01'] %}
+            {% assign category_posts = site.categories['xxx01'] %}
             {% assign featured_posts = category_posts | slice: 0, 5 %}
             {% if featured_posts.size >= 5 %}
             <section class="gv2-section">
@@ -658,7 +658,7 @@ layout: null
     </script>
 
     
- <!--   {% include /ads/gobloggugel/default.html %}-->
+    {% include /ads/gobloggugel/default.html %}
     {% include footer.html %}
 
     
